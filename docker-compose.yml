@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+  # RABBITMQ
+  RabbitMQ:
+    container_name: RabbitMQ
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - 5671:5671
+      - 5672:5672
+      - 4369:4369
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_NODE_IP_ADDRESS=0.0.0.0
+    networks:
+      - neoway
+
+  # Database Configuration
+  PostgreSQL:
+    container_name: PostgreSQL
+    image: "postgres:${POSTGRES_VERSION}"
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    ports:
+      - $POSTGRES_PORT:5432
+    networks:
+      - neoway
+    volumes:
+      - ./database/my-postgres.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    restart: always
+
+networks:
+  neoway:
+    name: neoway
