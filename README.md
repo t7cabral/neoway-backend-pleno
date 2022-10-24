@@ -30,12 +30,16 @@ Todas as configurações e credencias de acesso estão no arquivo **.env** na ra
 
 
 ## Tabelas do Banco de Dados:
-![MarineGEO circle logo](diagrama_tabelas.png "MarineGEO logo")
+![diagrama tabelas](diagrama_tabelas.png "diagrama tabelas")
 
 **tb_file_upload:** Ao receber o arquivo, o serviço de API irá:
 registrar as informações do arquivo nessa tabela; armazenar o arquivo em 'storage' para que o mesmo seja acessível por outros serviços; registrar um evento na fila 'file:new' para que o serviço **FILE-TEXT-EXTRACTOR** possa processar o arquivo; A coluna 'process_status' mantém o status do processamento do arquivo.
 
 **tb_file_processed:** O serviço **FILE-TEXT-EXTRACTOR** consome a fila 'file:new' e: processa o arquivo validando CPF, CNPJ e armazena os dados nessa tabela; ao final atualiza o 'process_status' do registro na tabela 'tb_file_upload' e deleta o arquivo no 'storage'.
+
+## Ferramentas Usadas:
+![Ferramentas usadas logo](used tools.png "Ferramentas usadas logo")
+
 
 
 Obrigado.
