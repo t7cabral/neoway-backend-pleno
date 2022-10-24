@@ -38,7 +38,7 @@ registrar as informações do arquivo nessa tabela; armazenar o arquivo em 'stor
 **tb_file_processed:** O serviço **FILE-TEXT-EXTRACTOR** consome a fila 'file:new' e: processa o arquivo validando CPF, CNPJ e armazena os dados nessa tabela; ao final atualiza o 'process_status' do registro na tabela 'tb_file_upload' e deleta o arquivo no 'storage'.
 
 ## Ferramentas Usadas:
-![Ferramentas usadas logo](used tools.png "Ferramentas usadas logo")
+![Ferramentas usadas logo](used_tools.jpg "Ferramentas usadas logo")
 
 
 
