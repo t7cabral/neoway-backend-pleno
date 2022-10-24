@@ -19,7 +19,7 @@ function App() {
       method: 'POST',
       body: formData
     }).then(
-      response => response.json() // if the response is a JSON object
+      response => response.json()
     ).then(success => {
       setBgResult(success.error_code ? 'bg-red-500' : 'bg-slate-300');
       setResultUpload(success);
