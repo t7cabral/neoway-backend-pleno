@@ -4,7 +4,7 @@ A descrição do desafio em [task.md](https://github.com/t7cabral/neoway-backend
 
 ## Iniciar Serviços:
 
-1. Clone o repositório do projeto;
+1. Clone o repositório do projeto '`git clone https://github.com/t7cabral/neoway-backend-pleno.git;`';
 
 2. Na raiz do projeto execute o comando '`sudo ./start.sh`'. Se apresentar erro ***permission denied*** execute o comando '`chmod +x start.sh`' e tente novamente. Se o error persistir, tente '`docker-compose up -d --build`';
 
