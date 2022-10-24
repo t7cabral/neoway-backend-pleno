@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = knex => knex.schema.createTable('tb_file_upload', table => {
-  table.string('id', 50).unique()
+  table.increments('id').primary()
   table.string('name', 200).notNullable()
   table.string('size').notNullable()
   table.string('mimetype', 50).notNullable()
@@ -12,7 +12,6 @@ exports.up = knex => knex.schema.createTable('tb_file_upload', table => {
   table.string('process_status', 20).notNullable()
   table.timestamp('created_at').defaultTo(knex.fn.now())
 })
-
 
 /**
  * @param { import("knex").Knex } knex

@@ -1,9 +1,28 @@
 version: '3.5'
 
 services:
+  # DATABASE
+  mysql:
+    container_name: mysql
+    platform: linux/x86_64
+    image: mysql:$DB_VERSION
+    env_file:
+      - .env
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - $DB_PORT:$DB_PORT
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      #- MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_PASSWORD
+    networks:
+      - neoway
+
   # RABBITMQ
-  RabbitMQ:
-    container_name: RabbitMQ
+  rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management
     restart: always
     ports:
@@ -18,23 +37,38 @@ services:
     networks:
       - neoway
 
-  # Database Configuration
-  PostgreSQL:
-    container_name: PostgreSQL
-    image: "postgres:${POSTGRES_VERSION}"
+  # FILE-TEXT-EXTRACTOR
+  file_text_extractor:
+    build:
+      context: file-text-extractor/.
+    container_name: file-text-extractor
+    restart: always
     environment:
-      POSTGRES_DB: "${POSTGRES_DB}"
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-    ports:
-      - $POSTGRES_PORT:5432
+      WAIT_HOSTS: rabbitmq:15672, mysql:3306
+    env_file:
+      - .env
+    volumes:
+      - ./${SHARED_STORAGE}:/home/node/neoway/file-text-extractor/storage
     networks:
       - neoway
-    volumes:
-      - ./database/my-postgres.conf:/etc/postgresql/postgresql.conf
-    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  # API
+  api:
+    build:
+      context: api/.
+    container_name: API
     restart: always
+    environment:
+      WAIT_HOSTS: rabbitmq:15672, mysql:3306
+    env_file:
+      - .env
+    ports:
+      - $API_PORT:3000
+    volumes:
+      - ./${SHARED_STORAGE}:/home/node/neoway/api/storage
+    networks:
+      - neoway
 
 networks:
   neoway:
-    name: neoway
+    driver: 'bridge'
