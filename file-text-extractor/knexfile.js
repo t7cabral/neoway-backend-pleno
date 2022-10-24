@@ -14,7 +14,12 @@ module.exports = {
     port: Number(process.env.DB_PORT),
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
-    password: String(process.env.DB_PASSWORD)
+    password: String(process.env.DB_PASSWORD),
+    connectTimeout: 90000
+  },
+  pool: {
+    min: 1,
+    max: 20,
   },
   debug: false,
   migrations: {

@@ -19,15 +19,8 @@ let amqp_channel: Channel;
 
 async function start_processor() {
   try {
-
     // connection RabbitMQ Singleton
     amqp_channel = await ConnectionRabbitmqSingleton.getInstance();
-
-
-    //const amqp_conn: Connection = await amqplib.connect(rabbitmqConfig.HOST);
-    //amqp_channel = await amqp_conn.createChannel();
-    //amqp_channel = await amqp_conn.createChannel();
-
     amqp_channel.consume(rabbitmqConfig.FILE_NEW, fn_consume_file_new);
   } catch (err: any) {
     console.log('ERR:', err);
@@ -73,9 +66,10 @@ async function fn_consume_file_new(message: any) {
           .first()
           .update({ process_status: 'FINISHED' }, ['process_status']);
 
+        // ACK message in queue
         amqp_channel.ack(message);
 
-
+        // Delete file
         fs.unlink(uriFile, function (err) {
           if (err) throw err;
           console.log(`File ${fileInfo.file_storage} file deleted!`);
