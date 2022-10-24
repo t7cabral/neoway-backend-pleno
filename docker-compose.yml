@@ -69,6 +69,17 @@ services:
     networks:
       - neoway
 
+  # WEB
+  web:
+    build:
+      context: web/.
+    container_name: web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - neoway
+
 networks:
   neoway:
     driver: 'bridge'

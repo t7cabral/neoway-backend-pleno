@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { PaperPlaneTilt } from 'phosphor-react';
 
 import './styles/main.css';
@@ -8,12 +8,12 @@ import logoImg from './assets/logo_neoway.svg';
 function App() {
   const [resultUpload, setResultUpload] = useState(null);
   const [bgResult, setBgResult] = useState('');
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const submitForm = () => {
-
     const formData = new FormData();
-    formData.append('file1', inputRef.current.files[0]);
+    const currentFile = inputRef.current?.files || [];
+    formData.append('file1', currentFile[0]);
 
     fetch('http://localhost:3000/file/upload', {
       method: 'POST',
@@ -48,7 +48,6 @@ function App() {
               hover:file:bg-violet-100
             "
             ref={inputRef}
-            onClick={() => inputRef.current.click()}
           />
         </label>
       </form>
@@ -70,7 +69,7 @@ function App() {
           </div>
       }
 
-    </div >
+    </div>
   )
 }
 
